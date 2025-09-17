@@ -1,0 +1,253 @@
+{
+  "metadatos": {
+    "nombre_tabla": "tabla_unificada_2025",
+    "descripcion": "Tabla unificada con información de encuestas y usuarios para Junio-Agosto 2025",
+    "fecha_creacion": "2025-09-17 12:50:37",
+    "total_registros": 543,
+    "estadisticas": {
+      "usuarios_unicos": 143,
+      "tipos_cuestionario": 3,
+      "calificacion_promedio": 3.37,
+      "fecha_minima": "2025-06-03 12:29:27.973",
+      "fecha_maxima": "2025-08-30 12:22:20.320"
+    }
+  },
+  "estructura_columnas": {
+    "id_encuesta": {
+      "tipo_dato": "INT",
+      "descripcion": "Identificador único de la encuesta (AUTOINCREMENT)",
+      "permite_nulos": true,
+      "valor_por_defecto": null,
+      "es_clave_primaria": false,
+      "valores_unicos_ejemplo": null
+    },
+    "id_estado_encuesta": {
+      "tipo_dato": "INT",
+      "descripcion": "ID del estado original de la encuesta",
+      "permite_nulos": true,
+      "valor_por_defecto": null,
+      "es_clave_primaria": false,
+      "valores_unicos_ejemplo": null
+    },
+    "estado": {
+      "tipo_dato": "TEXT",
+      "descripcion": "Estado actual de la encuesta (ej: Completada, Pendiente)",
+      "permite_nulos": true,
+      "valor_por_defecto": null,
+      "es_clave_primaria": false,
+      "valores_unicos_ejemplo": [
+        "Contestada"
+      ]
+    },
+    "id_cuestionario": {
+      "tipo_dato": "INT",
+      "descripcion": "Identificador del tipo de cuestionario",
+      "permite_nulos": true,
+      "valor_por_defecto": null,
+      "es_clave_primaria": false,
+      "valores_unicos_ejemplo": null
+    },
+    "descripcion_cuestionario": {
+      "tipo_dato": "TEXT",
+      "descripcion": "Descripción del tipo de cuestionario",
+      "permite_nulos": true,
+      "valor_por_defecto": null,
+      "es_clave_primaria": false,
+      "valores_unicos_ejemplo": null
+    },
+    "calificacion": {
+      "tipo_dato": "INT",
+      "descripcion": "Calificación numérica de la encuesta (1-5)",
+      "permite_nulos": true,
+      "valor_por_defecto": null,
+      "es_clave_primaria": false,
+      "valores_unicos_ejemplo": null
+    },
+    "descripcion_calificacion": {
+      "tipo_dato": "TEXT",
+      "descripcion": "Descripción textual de la calificación",
+      "permite_nulos": true,
+      "valor_por_defecto": null,
+      "es_clave_primaria": false,
+      "valores_unicos_ejemplo": [
+        "Muy bueno / Muy ágil / Muy recomendable",
+        "Malo / Poco ágil / Poco recomendable",
+        "Bueno / Ágil / Recomendable",
+        "Muy malo / No muy ágil / Nada recomendable",
+        "Regular / Regular / Neutral"
+      ]
+    },
+    "fecha_limite": {
+      "tipo_dato": "TEXT",
+      "descripcion": "Fecha límite para completar la encuesta",
+      "permite_nulos": true,
+      "valor_por_defecto": null,
+      "es_clave_primaria": false,
+      "valores_unicos_ejemplo": null
+    },
+    "fecha_creado": {
+      "tipo_dato": "TEXT",
+      "descripcion": "Fecha de creación del registro",
+      "permite_nulos": true,
+      "valor_por_defecto": null,
+      "es_clave_primaria": false,
+      "valores_unicos_ejemplo": null
+    },
+    "hora_creado": {
+      "tipo_dato": "TEXT",
+      "descripcion": "Hora de creación del registro",
+      "permite_nulos": true,
+      "valor_por_defecto": null,
+      "es_clave_primaria": false,
+      "valores_unicos_ejemplo": null
+    },
+    "fecha_modificado": {
+      "tipo_dato": "TEXT",
+      "descripcion": "Fecha de última modificación",
+      "permite_nulos": true,
+      "valor_por_defecto": null,
+      "es_clave_primaria": false,
+      "valores_unicos_ejemplo": null
+    },
+    "hora_modificado": {
+      "tipo_dato": "TEXT",
+      "descripcion": "Hora de última modificación",
+      "permite_nulos": true,
+      "valor_por_defecto": null,
+      "es_clave_primaria": false,
+      "valores_unicos_ejemplo": null
+    },
+    "fecha_insercion": {
+      "tipo_dato": "TEXT",
+      "descripcion": "Fecha de inserción en la base de datos",
+      "permite_nulos": true,
+      "valor_por_defecto": null,
+      "es_clave_primaria": false,
+      "valores_unicos_ejemplo": null
+    },
+    "usuario_id": {
+      "tipo_dato": "INT",
+      "descripcion": "Identificador del usuario que respondió",
+      "permite_nulos": true,
+      "valor_por_defecto": null,
+      "es_clave_primaria": false,
+      "valores_unicos_ejemplo": null
+    },
+    "nombre_usuario": {
+      "tipo_dato": "TEXT",
+      "descripcion": "Nombre del usuario",
+      "permite_nulos": true,
+      "valor_por_defecto": null,
+      "es_clave_primaria": false,
+      "valores_unicos_ejemplo": null
+    },
+    "telefono": {
+      "tipo_dato": "TEXT",
+      "descripcion": "Número de teléfono del usuario",
+      "permite_nulos": true,
+      "valor_por_defecto": null,
+      "es_clave_primaria": false,
+      "valores_unicos_ejemplo": null
+    },
+    "email": {
+      "tipo_dato": "TEXT",
+      "descripcion": "Correo electrónico del usuario",
+      "permite_nulos": true,
+      "valor_por_defecto": null,
+      "es_clave_primaria": false,
+      "valores_unicos_ejemplo": null
+    },
+    "año": {
+      "tipo_dato": "",
+      "descripcion": "Año extraído de fecha_insercion",
+      "permite_nulos": true,
+      "valor_por_defecto": null,
+      "es_clave_primaria": false,
+      "valores_unicos_ejemplo": null
+    },
+    "mes": {
+      "tipo_dato": "",
+      "descripcion": "Mes extraído de fecha_insercion",
+      "permite_nulos": true,
+      "valor_por_defecto": null,
+      "es_clave_primaria": false,
+      "valores_unicos_ejemplo": null
+    },
+    "año_mes": {
+      "tipo_dato": "",
+      "descripcion": "Año-mes en formato YYYY-MM",
+      "permite_nulos": true,
+      "valor_por_defecto": null,
+      "es_clave_primaria": false,
+      "valores_unicos_ejemplo": null
+    }
+  },
+  "ejemplos_datos": [
+    {
+      "id_encuesta": 150016,
+      "id_estado_encuesta": 2,
+      "estado": "Contestada",
+      "id_cuestionario": 1,
+      "descripcion_cuestionario": "¿Cómo califica la atención y servicio brindado por nuestros asesores?. Siendo 5 muy bueno y 1 muy malo",
+      "calificacion": 5,
+      "descripcion_calificacion": "Muy bueno / Muy ágil / Muy recomendable",
+      "fecha_limite": "20250829",
+      "fecha_creado": "20250829",
+      "hora_creado": "12:45:13",
+      "fecha_modificado": "20250830",
+      "hora_modificado": "11:09:59",
+      "fecha_insercion": "2025-08-30 12:22:20.320",
+      "usuario_id": 59940,
+      "nombre_usuario": "",
+      "telefono": "573292440216",
+      "email": "diegomeza@example.org",
+      "año": "2025",
+      "mes": "08",
+      "año_mes": "2025-08"
+    },
+    {
+      "id_encuesta": 150019,
+      "id_estado_encuesta": 2,
+      "estado": "Contestada",
+      "id_cuestionario": 2,
+      "descripcion_cuestionario": "¿La Compañía hizo que el trámite de su solicitud fuera ágil? Siendo 5 muy ágil y 1 no muy ágil.",
+      "calificacion": 5,
+      "descripcion_calificacion": "Muy bueno / Muy ágil / Muy recomendable",
+      "fecha_limite": "20250829",
+      "fecha_creado": "20250829",
+      "hora_creado": "12:45:13",
+      "fecha_modificado": "20250830",
+      "hora_modificado": "11:09:59",
+      "fecha_insercion": "2025-08-30 12:22:20.320",
+      "usuario_id": 59940,
+      "nombre_usuario": "",
+      "telefono": "573292440216",
+      "email": "diegomeza@example.org",
+      "año": "2025",
+      "mes": "08",
+      "año_mes": "2025-08"
+    },
+    {
+      "id_encuesta": 150022,
+      "id_estado_encuesta": 2,
+      "estado": "Contestada",
+      "id_cuestionario": 3,
+      "descripcion_cuestionario": "¿Qué probabilidades hay que nos recomiende a un amigo o familiar? En una escala  de 1 a 5, donde 5 es muy recomendable y 1 nada recomendable.",
+      "calificacion": 5,
+      "descripcion_calificacion": "Muy bueno / Muy ágil / Muy recomendable",
+      "fecha_limite": "20250829",
+      "fecha_creado": "20250829",
+      "hora_creado": "12:45:13",
+      "fecha_modificado": "20250830",
+      "hora_modificado": "11:09:59",
+      "fecha_insercion": "2025-08-30 12:22:20.320",
+      "usuario_id": 59940,
+      "nombre_usuario": "",
+      "telefono": "573292440216",
+      "email": "diegomeza@example.org",
+      "año": "2025",
+      "mes": "08",
+      "año_mes": "2025-08"
+    }
+  ]
+}
