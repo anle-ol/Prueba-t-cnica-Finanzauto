@@ -5,10 +5,15 @@ Solo crea la tabla con información de encuestas y usuarios para Junio-Agosto 20
 """
 
 import sqlite3
+import os
 
 def conectar_bd():
     """Conecta a la base de datos"""
-    conn = sqlite3.connect('encuestas_usuarios_simplificada.db')
+    # Usar la base de datos generada en 'Punto 2'
+    proyecto_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    db_path = os.path.join(proyecto_root, 'Punto 2', 'encuestas_usuarios_simplificada.db')
+    conn = sqlite3.connect(db_path)
+    conn.execute('PRAGMA foreign_keys = ON;')
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -30,7 +35,8 @@ def ejecutar_punto3():
             e.estado,
             e.id_cuestionario,
             e.descripcion_cuestionario,
-            e.calificacion,
+            e.id_calificacion,
+            dc.calificacion AS calificacion_valor,
             dc.descripcion AS descripcion_calificacion,
             e.fecha_limite,
             e.fecha_creado,
@@ -47,11 +53,11 @@ def ejecutar_punto3():
             strftime('%Y-%m', e.fecha_insercion) AS año_mes
         FROM encuestas e
         INNER JOIN usuarios u ON e.usuario_id = u.id_usuario
-        LEFT JOIN dimension_calificaciones dc ON e.calificacion = dc.calificacion
+        LEFT JOIN dimension_calificaciones dc ON e.id_calificacion = dc.id_calificacion
         WHERE 
             strftime('%Y', e.fecha_insercion) = '2025'
             AND strftime('%m', e.fecha_insercion) IN ('06', '07', '08')
-            AND e.calificacion IS NOT NULL
+            AND e.id_calificacion IS NOT NULL
         ORDER BY e.fecha_insercion DESC
         """
         
@@ -66,7 +72,7 @@ def ejecutar_punto3():
             SELECT 
                 COUNT(*) AS total_registros,
                 COUNT(DISTINCT usuario_id) AS usuarios_unicos,
-                AVG(calificacion) AS calificacion_promedio
+                AVG(calificacion_valor) AS calificacion_promedio
             FROM tabla_unificada_2025
         """)
         
@@ -83,7 +89,7 @@ def ejecutar_punto3():
                 id_encuesta,
                 nombre_usuario,
                 email,
-                calificacion,
+                calificacion_valor,
                 fecha_insercion
             FROM tabla_unificada_2025
             LIMIT 5

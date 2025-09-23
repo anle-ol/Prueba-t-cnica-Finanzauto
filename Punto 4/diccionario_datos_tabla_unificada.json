@@ -2,7 +2,7 @@
   "metadatos": {
     "nombre_tabla": "tabla_unificada_2025",
     "descripcion": "Tabla unificada con información de encuestas y usuarios para Junio-Agosto 2025",
-    "fecha_creacion": "2025-09-17 12:50:37",
+    "fecha_creacion": "2025-09-23 12:37:31",
     "total_registros": 543,
     "estadisticas": {
       "usuarios_unicos": 143,
@@ -55,7 +55,15 @@
       "es_clave_primaria": false,
       "valores_unicos_ejemplo": null
     },
-    "calificacion": {
+    "id_calificacion": {
+      "tipo_dato": "INT",
+      "descripcion": "Identificador de la calificación (FK a dimensión)",
+      "permite_nulos": true,
+      "valor_por_defecto": null,
+      "es_clave_primaria": false,
+      "valores_unicos_ejemplo": null
+    },
+    "calificacion_valor": {
       "tipo_dato": "INT",
       "descripcion": "Calificación numérica de la encuesta (1-5)",
       "permite_nulos": true,
@@ -184,12 +192,13 @@
   },
   "ejemplos_datos": [
     {
-      "id_encuesta": 150016,
+      "id_encuesta": 20016,
       "id_estado_encuesta": 2,
       "estado": "Contestada",
       "id_cuestionario": 1,
       "descripcion_cuestionario": "¿Cómo califica la atención y servicio brindado por nuestros asesores?. Siendo 5 muy bueno y 1 muy malo",
-      "calificacion": 5,
+      "id_calificacion": 5,
+      "calificacion_valor": 5,
       "descripcion_calificacion": "Muy bueno / Muy ágil / Muy recomendable",
       "fecha_limite": "20250829",
       "fecha_creado": "20250829",
@@ -198,7 +207,7 @@
       "hora_modificado": "11:09:59",
       "fecha_insercion": "2025-08-30 12:22:20.320",
       "usuario_id": 59940,
-      "nombre_usuario": "",
+      "nombre_usuario": "Elizabeth García Rojas",
       "telefono": "573292440216",
       "email": "diegomeza@example.org",
       "año": "2025",
@@ -206,12 +215,13 @@
       "año_mes": "2025-08"
     },
     {
-      "id_encuesta": 150019,
+      "id_encuesta": 20019,
       "id_estado_encuesta": 2,
       "estado": "Contestada",
       "id_cuestionario": 2,
       "descripcion_cuestionario": "¿La Compañía hizo que el trámite de su solicitud fuera ágil? Siendo 5 muy ágil y 1 no muy ágil.",
-      "calificacion": 5,
+      "id_calificacion": 5,
+      "calificacion_valor": 5,
       "descripcion_calificacion": "Muy bueno / Muy ágil / Muy recomendable",
       "fecha_limite": "20250829",
       "fecha_creado": "20250829",
@@ -220,7 +230,7 @@
       "hora_modificado": "11:09:59",
       "fecha_insercion": "2025-08-30 12:22:20.320",
       "usuario_id": 59940,
-      "nombre_usuario": "",
+      "nombre_usuario": "Elizabeth García Rojas",
       "telefono": "573292440216",
       "email": "diegomeza@example.org",
       "año": "2025",
@@ -228,12 +238,13 @@
       "año_mes": "2025-08"
     },
     {
-      "id_encuesta": 150022,
+      "id_encuesta": 20022,
       "id_estado_encuesta": 2,
       "estado": "Contestada",
       "id_cuestionario": 3,
       "descripcion_cuestionario": "¿Qué probabilidades hay que nos recomiende a un amigo o familiar? En una escala  de 1 a 5, donde 5 es muy recomendable y 1 nada recomendable.",
-      "calificacion": 5,
+      "id_calificacion": 5,
+      "calificacion_valor": 5,
       "descripcion_calificacion": "Muy bueno / Muy ágil / Muy recomendable",
       "fecha_limite": "20250829",
       "fecha_creado": "20250829",
@@ -242,7 +253,7 @@
       "hora_modificado": "11:09:59",
       "fecha_insercion": "2025-08-30 12:22:20.320",
       "usuario_id": 59940,
-      "nombre_usuario": "",
+      "nombre_usuario": "Elizabeth García Rojas",
       "telefono": "573292440216",
       "email": "diegomeza@example.org",
       "año": "2025",

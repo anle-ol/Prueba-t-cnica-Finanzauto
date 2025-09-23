@@ -7,10 +7,15 @@ Guarda información de la tabla resultante y explica cómo pasarla a una aplicac
 import sqlite3
 import json
 from datetime import datetime
+import os
 
 def conectar_bd():
     """Conecta a la base de datos"""
-    conn = sqlite3.connect('encuestas_usuarios_simplificada.db')
+    # Usar la base de datos generada en 'Punto 2'
+    proyecto_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    db_path = os.path.join(proyecto_root, 'Punto 2', 'encuestas_usuarios_simplificada.db')
+    conn = sqlite3.connect(db_path)
+    conn.execute('PRAGMA foreign_keys = ON;')
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -47,7 +52,7 @@ def crear_diccionario_datos():
             SELECT 
                 COUNT(DISTINCT usuario_id) as usuarios_unicos,
                 COUNT(DISTINCT id_cuestionario) as tipos_cuestionario,
-                AVG(calificacion) as calificacion_promedio,
+                AVG(calificacion_valor) as calificacion_promedio,
                 MIN(fecha_insercion) as fecha_minima,
                 MAX(fecha_insercion) as fecha_maxima
             FROM tabla_unificada_2025
@@ -118,7 +123,7 @@ def crear_diccionario_datos():
         return diccionario_datos
         
     except Exception as e:
-        print(f"❌ Error: {str(e)}")
+        print(f" Error: {str(e)}")
         return None
     
     finally:
@@ -133,7 +138,8 @@ def obtener_descripcion_columna(nombre_columna):
         'estado': 'Estado actual de la encuesta (ej: Completada, Pendiente)',
         'id_cuestionario': 'Identificador del tipo de cuestionario',
         'descripcion_cuestionario': 'Descripción del tipo de cuestionario',
-        'calificacion': 'Calificación numérica de la encuesta (1-5)',
+        'id_calificacion': 'Identificador de la calificación (FK a dimensión)',
+        'calificacion_valor': 'Calificación numérica de la encuesta (1-5)',
         'descripcion_calificacion': 'Descripción textual de la calificación',
         'fecha_limite': 'Fecha límite para completar la encuesta',
         'fecha_creado': 'Fecha de creación del registro',
@@ -159,10 +165,10 @@ def main():
     print(f"\n" + "="*60)
     print("PUNTO 4 COMPLETADO")
     print("="*60)
-    print("📁 Archivos generados:")
+    print("Archivos generados:")
     print("   - diccionario_datos_tabla_unificada.json")
     print("   - punto4_diccionario_datos.py")
-    print("\n🎯 RECOMENDACIÓN PRINCIPAL:")
+    print("\n RECOMENDACIÓN PRINCIPAL:")
     print("   Para aplicaciones web/API: Usar archivo JSON")
     print("   Para scripts Python: Usar diccionario directo")
     print("   Para funciones específicas: Usar parámetros filtrados")

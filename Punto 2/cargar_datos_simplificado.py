@@ -1,6 +1,6 @@
 """
-Script SIMPLIFICADO para cargar datos con 3 tablas y ID AUTOINCREMENTAL
-SOLUCIÓN: Solo 3 tablas originales, pero con ID único real en ENCUESTAS
+Utilice cualquier motor de bases de datos relacional para alojar los archivos en 
+tablas mediante un script de Python.
 """
 
 import sqlite3
@@ -11,12 +11,19 @@ import hashlib
 def conectar_bd():
     """Conecta a la base de datos SQLite"""
     conn = sqlite3.connect('encuestas_usuarios_simplificada.db')
+    # Habilitar llaves foráneas en SQLite
+    conn.execute('PRAGMA foreign_keys = ON;')
     return conn
 
 def crear_tablas_simplificadas(conn):
     """Crea las 3 tablas con ID AUTOINCREMENTAL en ENCUESTAS"""
     cursor = conn.cursor()
     
+    # Reconstruir tablas para asegurar el esquema correcto y llaves foráneas
+    cursor.execute('DROP TABLE IF EXISTS encuestas')
+    cursor.execute('DROP TABLE IF EXISTS usuarios')
+    cursor.execute('DROP TABLE IF EXISTS dimension_calificaciones')
+
     # Tabla usuarios (sin cambios)
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS usuarios (
@@ -24,6 +31,15 @@ def crear_tablas_simplificadas(conn):
             nombre TEXT NOT NULL,
             telefono TEXT,
             email TEXT
+        )
+    ''')
+
+    # Tabla dimension_calificaciones (sin cambios)
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS dimension_calificaciones (
+            id_calificacion INTEGER PRIMARY KEY,
+            calificacion INTEGER,
+            descripcion TEXT
         )
     ''')
     
@@ -35,7 +51,7 @@ def crear_tablas_simplificadas(conn):
             estado TEXT,
             id_cuestionario INTEGER,
             descripcion_cuestionario TEXT,
-            calificacion INTEGER,
+            id_calificacion INTEGER,
             fecha_limite TEXT,
             fecha_creado TEXT,
             hora_creado TEXT,
@@ -44,18 +60,12 @@ def crear_tablas_simplificadas(conn):
             fecha_insercion TEXT,
             usuario_id INTEGER,
             hash_unico TEXT UNIQUE,
-            FOREIGN KEY (usuario_id) REFERENCES usuarios (id_usuario)
+            FOREIGN KEY (usuario_id) REFERENCES usuarios (id_usuario),
+            FOREIGN KEY (id_calificacion) REFERENCES dimension_calificaciones (id_calificacion)
         )
     ''')
     
-    # Tabla dimension_calificaciones (sin cambios)
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS dimension_calificaciones (
-            id_calificacion INTEGER PRIMARY KEY,
-            calificacion INTEGER,
-            descripcion TEXT
-        )
-    ''')
+
     
     conn.commit()
     print("3 tablas creadas exitosamente")
@@ -75,7 +85,7 @@ def cargar_usuarios(conn):
     cursor = conn.cursor()
     cursor.execute("DELETE FROM usuarios")
     
-    with open('usuarios.csv', 'r', encoding='utf-8') as file:
+    with open('usuarios.csv', 'r', encoding='utf-8-sig') as file:
         reader = csv.DictReader(file, delimiter=';')
         count = 0
         for row in reader:
@@ -105,7 +115,7 @@ def cargar_encuestas_simplificadas(conn):
     encuestas_duplicadas = 0
     encuestas_validas = 0
     
-    with open('Encuestas.csv', 'r', encoding='utf-8-sig') as file:
+    with open('encuestas.csv', 'r', encoding='utf-8-sig') as file:
         reader = csv.DictReader(file, delimiter=';')
         
         for row in reader:
@@ -120,12 +130,13 @@ def cargar_encuestas_simplificadas(conn):
                     continue
                 
                 # Limpiar campos numéricos
-                calificacion = None
+                id_calificacion = None
                 if row.get('Calificacion') and row['Calificacion'] != 'NULL':
                     try:
-                        calificacion = int(row['Calificacion'])
+                        # Asumimos que el valor 'Calificacion' del CSV corresponde al id_calificacion
+                        id_calificacion = int(row['Calificacion'])
                     except:
-                        calificacion = None
+                        id_calificacion = None
                 
                 id_cuestionario = None
                 if row.get('IdCuestionario') and row['IdCuestionario'] != 'NULL':
@@ -144,7 +155,7 @@ def cargar_encuestas_simplificadas(conn):
                 cursor.execute('''
                     INSERT INTO encuestas (
                         id_estado_encuesta, estado, id_cuestionario, descripcion_cuestionario,
-                        calificacion, fecha_limite, fecha_creado, hora_creado,
+                        id_calificacion, fecha_limite, fecha_creado, hora_creado,
                         fecha_modificado, hora_modificado, fecha_insercion,
                         usuario_id, hash_unico
                     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -153,7 +164,7 @@ def cargar_encuestas_simplificadas(conn):
                     row.get('Estado', ''),
                     id_cuestionario,
                     row.get('DescripcionCuestionario', ''),
-                    calificacion,
+                    id_calificacion,
                     row.get('FechaLimite', ''),
                     row.get('FechaCreado', ''),
                     row.get('HoraCreado', ''),
@@ -165,12 +176,12 @@ def cargar_encuestas_simplificadas(conn):
                 ))
                 
                 encuestas_procesadas += 1
-                if calificacion is not None:
+                if id_calificacion is not None:
                     encuestas_validas += 1
                 
             
-                if encuestas_procesadas >= 30000:
-                    print(f"Procesando solo los primeros 10,000 registros para prueba")
+                if encuestas_procesadas >= 100000:
+                    print(f"Procesando solo los primeros 100,000 registros para prueba")
                     break
     
     conn.commit()
@@ -220,20 +231,22 @@ def verificar_datos_simplificados(conn):
     cursor.execute('''
         SELECT 
             e.id_encuesta,
+            u.id_usuario,
             e.id_estado_encuesta,
             e.estado,
-            e.calificacion,
+            d.calificacion AS calificacion_valor,
             u.nombre,
             e.fecha_insercion
         FROM encuestas e
         LEFT JOIN usuarios u ON e.usuario_id = u.id_usuario
-        WHERE e.calificacion IS NOT NULL
+        LEFT JOIN dimension_calificaciones d ON e.id_calificacion = d.id_calificacion
+        WHERE e.id_calificacion IS NOT NULL
         LIMIT 5
     ''')
     
     for row in cursor.fetchall():
-        print(f"   ID: {row[0]}, Estado ID: {row[1]}, Estado: {row[2]}, "
-              f"Calificación: {row[3]}, Usuario: {row[4]}, Fecha: {row[5]}")
+        print(f"   ID: {row[0]}, Estado ID: {row[1]}, Usuario: {row[2]} Estado: {row[3]}, "
+              f"Calificación: {row[4]}, Usuario: {row[5]}, Fecha: {row[6]}")
     
     # Verificar que los IDs son únicos y secuenciales
     print("\nVerificación de IDs")
@@ -274,8 +287,8 @@ def main():
         
         # Cargar datos
         cargar_usuarios(conn)
-        cargar_encuestas_simplificadas(conn)
         cargar_dimension_calificaciones(conn)
+        cargar_encuestas_simplificadas(conn)
         
         # Verificar datos simplificados
         verificar_datos_simplificados(conn)
